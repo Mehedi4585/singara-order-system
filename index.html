@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="bn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>আধুনিক সিঙ্গারা অর্ডার সিস্টেম</title>
+
+<!-- Fonts & libs -->
+<link href="https://fonts.googleapis.com/css2?family=Baloo+Da+2:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/style.css">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+</head>
+<body>
+<div class="shell">
+<header>
+  <div class="logo">Sg</div>
+  <div>
+    <h1>আধুনিক সিঙ্গারা অর্ডার সিস্টেম</h1>
+    <p>ফিউচারিস্টিক লুক, সুন্দর পিডিএফ রিপোর্ট ও পেমেন্ট ট্র্যাকিং — সরাসরি তোমার ব্রাউজারে।</p>
+  </div>
+</header>
+
+<div class="grid">
+  <!-- LEFT: USER ORDER -->
+  <div class="card">
+    <div class="singara-image"></div>
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
+      <div>
+        <div class="price-bubble">প্রতি পিস: ১২ টাকা</div>
+        <div class="muted-small">আজকের তারিখ: <span id="todayLabel"></span></div>
+      </div>
+      <div style="text-align:right">
+        <button class="btn btn-ghost" onclick="showAdminLogin()">অ্যাডমিন লগইন</button>
+      </div>
+    </div>
+
+    <form id="orderForm" style="margin-top:14px">
+      <label for="userName">আপনার নাম</label>
+      <input id="userName" type="text" placeholder="যেমন: রাহুল" required>
+
+      <label for="quantity">পরিমাণ (পিস)</label>
+      <input id="quantity" type="number" min="1" value="1" required>
+
+      <label for="note">নোট (ঐচ্ছিক)</label>
+      <input id="note" type="text" placeholder="উদাহরণ: ডিমযুক্ত/ডিমহীন">
+
+      <div style="display:flex;gap:10px;margin-top:12px">
+        <button class="btn btn-primary" type="submit">অর্ডার জমা দিন</button>
+        <button class="btn btn-ghost" type="button" onclick="resetOrderForm()">রিসেট</button>
+      </div>
+
+      <div id="orderMessage" class="message"></div>
+      <div id="todayUserSummary" style="margin-top:12px;padding:10px;border-radius:8px;background:rgba(255,255,255,0.02);display:none"></div>
+    </form>
+  </div>
+
+  <!-- RIGHT: ADMIN / REPORT -->
+  <div class="side card">
+    <div id="adminLoginView">
+      <h2>🔐 অ্যাডমিন লগইন</h2>
+      <div style="margin-top:8px">
+        <label>অ্যাডমিন পাসওয়ার্ড</label>
+        <input id="adminPassInput" type="password" placeholder="পাসওয়ার্ড দিন" />
+        <div style="display:flex;gap:10px;margin-top:8px">
+          <button class="btn btn-primary" onclick="loginAdmin()">লগইন</button>
+          <button class="btn btn-ghost" onclick="showUserPanel()">ফিরে যান</button>
+        </div>
+        <div id="adminLoginMsg" class="message error" style="display:none;margin-top:10px"></div>
+      </div>
+    </div>
+
+    <div id="adminPanelView" style="display:none">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
+        <div>
+          <h2>📊 আজকের অর্ডারের রিপোর্ট</h2>
+          <div class="muted-small">মোট অর্ডার ও কাস্টমার হিসাব</div>
+        </div>
+        <div class="controls">
+          <button class="btn btn-primary" onclick="downloadOrderReportPDF()">রিপোর্ট PDF</button>
+          <button class="btn btn-ghost" onclick="showPaymentPanel()">টাকা হিসাব প্যানেল</button>
+          <button class="btn btn-ghost" onclick="logoutAdmin()">লগআউট</button>
+        </div>
+      </div>
+      <div class="report-area" id="orderSummary"></div>
+    </div>
+
+    <div id="paymentPanelView" style="display:none">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <div>
+          <h2>💰 টাকা লেনদেনের হিসাব</h2>
+          <div class="muted-small">প্রতিটি কাস্টমারের পেমেন্ট ট্র্যাক করুন</div>
+        </div>
+        <div class="controls">
+          <button class="btn btn-danger" onclick="resetAllData()">ডেটা রিসেট</button>
+          <button class="btn btn-ghost" onclick="showAdminPanel()">রিপোর্টে ফিরে যান</button>
+        </div>
+      </div>
+      <div id="paymentSummary" style="margin-top:12px"></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- Firebase config এবং JS -->
+<script type="module" src="/firebase-config.js"></script>
+<script type="module" src="/app.js"></script>
+</body>
+</html>
